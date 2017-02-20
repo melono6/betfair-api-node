@@ -1,0 +1,12 @@
+{
+  "name": "betfair-api",
+  "version": "0.0.1",
+  "description": "Node wrapper for the betfair api",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/melono6/betfair-api-node"
+  },
+  "author": "melono6 (https://github.com/melono6/)",
+  "homepage": "https://github.com/melono6/betfair-api-node"
+}
