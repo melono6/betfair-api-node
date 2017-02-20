@@ -1,4 +1,32 @@
-/* jslint node:true, esnext:true */
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: index.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: index.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/* jslint node:true, esnext:true */
 'use strict';
 
 var https = require('https'),
@@ -36,7 +64,7 @@ class Betfair {
 
     /**
      * @param {object} filter - Filter options (refer to betfair docs)
-     * @return {Promise<Array>} - Promise that resolves with the results in an array
+     * @return {Promise&lt;Array>} - Promise that resolves with the results in an array
      */
     getEventTypes (filter) {
         return this.devApi('listEventTypes', {
@@ -48,7 +76,7 @@ class Betfair {
 
     /**
      * @param {object} filter - Filter options (refer to betfair docs)
-     * @return {Promise<Array>} - Promise that resolves with the results in an array
+     * @return {Promise&lt;Array>} - Promise that resolves with the results in an array
      */
     getCompetitions (filter) {
         return this.devApi('listCompetitions', {
@@ -61,7 +89,7 @@ class Betfair {
     /**
      * @param {object} filter - Filter options (refer to betfair docs)
      * @param {string} granularity - DAYS/HOURS/MINUTES
-     * @return {Promise<Array>} - Promise that resolves with the results in an array
+     * @return {Promise&lt;Array>} - Promise that resolves with the results in an array
      */
     getTimeRanges (filter, granularity) {
         return this.devApi('listTimeRanges', {
@@ -74,7 +102,7 @@ class Betfair {
 
     /**
      * @param {object} filter - Filter options (refer to betfair docs)
-     * @return {Promise<Array>} - Promise that resolves with the results in an array
+     * @return {Promise&lt;Array>} - Promise that resolves with the results in an array
      */
     getEvents (filter) {
         return this.devApi('listEvents', {
@@ -86,7 +114,7 @@ class Betfair {
 
     /**
      * @param {object} filter - Filter options (refer to betfair docs)
-     * @return {Promise<Array>} - Promise that resolves with the results in an array
+     * @return {Promise&lt;Array>} - Promise that resolves with the results in an array
      */
     getMarketTypes (filter) {
         return this.devApi('listMarketTypes', {
@@ -98,7 +126,7 @@ class Betfair {
 
     /**
      * @param {object} filter - Filter options (refer to betfair docs)
-     * @return {Promise<Array>} - Promise that resolves with the results in an array
+     * @return {Promise&lt;Array>} - Promise that resolves with the results in an array
      */
     getCountries (filter) {
         return this.devApi('listCountries', {
@@ -110,7 +138,7 @@ class Betfair {
 
     /**
      * @param {object} filter - Filter options (refer to betfair docs)
-     * @return {Promise<Array>} - Promise that resolves with the results in an array
+     * @return {Promise&lt;Array>} - Promise that resolves with the results in an array
      */
     getVenues (filter) {
         return this.devApi('listVenues', {
@@ -124,7 +152,7 @@ class Betfair {
      * @param {object} filter - Filter options (refer to betfair docs)
      * @param {string} maxResults - Filter options (refer to betfair docs)
      * @todo add opts object for optional args
-     * @return {Promise<Array>} - Promise that resolves with the results in an array
+     * @return {Promise&lt;Array>} - Promise that resolves with the results in an array
      */
     getMarketCatalogue (filter, maxResults) {
         return this.devApi('listMarketCatalogue', {
@@ -138,7 +166,7 @@ class Betfair {
     /**
      * @param {array} marketIds - array of market ids
      * @param {number} maxResults - number of max results to return
-     * @return {Promise<Array>} - Promise that resolves with the results in an array
+     * @return {Promise&lt;Array>} - Promise that resolves with the results in an array
      * @todo add opts object for optional args, move priceProjection into it
      */
     getMarketBook (marketIds,  priceProjection) {
@@ -152,7 +180,7 @@ class Betfair {
 
     /**
      * @param {object} [params] - optional parameters (refer to betfair docs)
-     * @return {Promise<Array>} - Promise that resolves with the results in an array
+     * @return {Promise&lt;Array>} - Promise that resolves with the results in an array
      */
     getMarketProfitAndLoss (params) {
         return this.devApi('listMarketProfitAndLoss', params || {}).then((response) => {
@@ -171,7 +199,7 @@ class Betfair {
 
     /**
      * @param {object} [params] - optional parameters (refer to betfair docs)
-     * @return {Promise<Array>} - Promise that resolves with the results in an array
+     * @return {Promise&lt;Array>} - Promise that resolves with the results in an array
      */
     getClearedOrders (params) {
         return this.devApi('listClearedOrders', params).then((response) => {
@@ -181,7 +209,7 @@ class Betfair {
 
     /**
      * @param {string} marketId - Id of market to bet in
-     * @param {array<Object>} instructions - Array of placeInstruction objects {@link Betfair.buildPlaceInstruction}
+     * @param {array&lt;Object>} instructions - Array of placeInstruction objects {@link Betfair.buildPlaceInstruction}
      * @todo add opts object for optional args
      */
     placeOrders (marketId, instructions) {
@@ -195,7 +223,7 @@ class Betfair {
 
     /**
      * @param {string} marketId - Id of market bet was made
-     * @param {array<Object>} instructions - Array of placeInstruction objects {@link Betfair.buildCancelInstruction}
+     * @param {array&lt;Object>} instructions - Array of placeInstruction objects {@link Betfair.buildCancelInstruction}
      * @todo add opts object for optional args
      */
     cancelOrders (marketId, instructions) {
@@ -209,7 +237,7 @@ class Betfair {
 
     /**
      * @param {string} marketId - Id of market bet was made
-     * @param {array<Object>} instructions - Array of placeInstruction objects {@link Betfair.buildUpdateInstruction}
+     * @param {array&lt;Object>} instructions - Array of placeInstruction objects {@link Betfair.buildUpdateInstruction}
      * @todo add opts object for optional args
      */
     updateOrders (marketId, instructions) {
@@ -223,7 +251,7 @@ class Betfair {
 
     /**
      * @param {string} marketId - Id of market bet was made
-     * @param {array<Object>} instructions - Array of placeInstruction objects {@link Betfair.buildReplaceInstruction}
+     * @param {array&lt;Object>} instructions - Array of placeInstruction objects {@link Betfair.buildReplaceInstruction}
      * @todo add opts object for optional args
      */
     replaceOrders (marketId, instructions) {
@@ -235,9 +263,9 @@ class Betfair {
         });
     }
 
-    /**
+        /**
      * @param {string} selectionId - Id of selection to bet on
-     * @param {number} handicap - handicap, default=0
+     * @param {number} handicap - handicap, default = 0
      * @param {string} orderType - LIMIT / LIMIT_ON_CLOSE / MARKET_ON_CLOSE
      * @param {string} side - BACK / LAY
      * @param {object} limitOrder - depending on orderType: {@link Betfair.buildLimitOrder} {@link Betfair.buildMarketOnCloseOrder} {@link Betfair.buildLimitOnCloseOrder}
@@ -377,3 +405,26 @@ class Betfair {
 }
 
 module.exports = Betfair;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Betfair.html">Betfair</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Mon Feb 20 2017 17:30:35 GMT+0000 (GMT)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
