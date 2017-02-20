@@ -6,6 +6,12 @@ var https = require('https'),
 
 class Betfair {
 
+    /**
+     * @contructor
+     * @param {string} appKey
+     * @param {string} [username]
+     * @param {string} [password]
+     */
     constructor(appKey, username, password) {
         this.appKey = appKey;
         this.authKey = '';
@@ -15,6 +21,10 @@ class Betfair {
         this.login();
     }
 
+    /**
+     * @param {string} [username]
+     * @param {string} [password]
+     */
     login (username, password) {
         this.request('identitysso.betfair.com', '/api/login', 'application/x-www-form-urlencoded', {
             username: username || this.username,
@@ -24,6 +34,44 @@ class Betfair {
         });
     }
 
+    /**
+     * @param {object} filter - Filter options (refer to betfair docs)
+     */
+    getEventTypes (filter) {
+        return this.devApi('listEventTypes', {
+            "filter": filter
+        }).then((response) => {
+            return response;
+        });
+    }
+
+    /**
+     * @param {object} filter - Filter options (refer to betfair docs)
+     */
+    getCompetitions (filter) {
+        return this.devApi('listCompetitions', {
+            "filter": filter
+        }).then((response) => {
+            return response;
+        });
+    }
+
+    /**
+     * @param {object} filter - Filter options (refer to betfair docs)
+     * @param {string} granularity - DAYS/HOURS/MINUTES
+     */
+    getTimeRanges (filter, granularity) {
+        return this.devApi('listTimeRanges', {
+            "filter": filter,
+            "granularity": granularity
+        }).then((response) => {
+            return response;
+        });
+    }
+
+    /**
+     * @param {object} filter - Filter options (refer to betfair docs)
+     */
     getEvents (filter) {
         return this.devApi('listEvents', {
             "filter": filter
@@ -32,6 +80,44 @@ class Betfair {
         });
     }
 
+    /**
+     * @param {object} filter - Filter options (refer to betfair docs)
+     */
+    getMarketTypes (filter) {
+        return this.devApi('listMarketTypes', {
+            "filter": filter
+        }).then((response) => {
+            return response;
+        });
+    }
+
+    /**
+     * @param {object} filter - Filter options (refer to betfair docs)
+     */
+    getCountries (filter) {
+        return this.devApi('listCountries', {
+            "filter": filter
+        }).then((response) => {
+            return response;
+        });
+    }
+
+    /**
+     * @param {object} filter - Filter options (refer to betfair docs)
+     */
+    getVenues (filter) {
+        return this.devApi('listVenues', {
+            "filter": filter
+        }).then((response) => {
+            return response;
+        });
+    }
+
+    /**
+     * @param {object} filter - Filter options (refer to betfair docs)
+     * @param {string} maxResults - Filter options (refer to betfair docs)
+     * @todo add opts object for optional args
+     */
     getMarketCatalogue (filter, maxResults) {
         return this.devApi('listMarketCatalogue', {
             "filter": filter,
@@ -41,6 +127,11 @@ class Betfair {
         });
     }
 
+    /**
+     * @param {array} marketIds - array of market ids
+     * @param {number} maxResults - number of max results to return
+     * @todo add opts object for optional args, move priceProjection into it
+     */
     getMarketBook (marketIds,  priceProjection) {
         return this.devApi('listMarketBook', {
             "marketIds": marketIds,
@@ -49,6 +140,41 @@ class Betfair {
             return response;
         });
     }
+
+    /**
+     * @param {object} [params] - optional parameters (refer to betfair docs)
+     */
+    getMarketProfitAndLoss (params) {
+        return this.devApi('listMarketProfitAndLoss', params || {}).then((response) => {
+            return response;
+        });
+    }
+
+    /**
+     * @param {object} [params] - optional parameters (refer to betfair docs)
+     */
+    getCurrentOrders (params) {
+        return this.devApi('listCurrentOrders', params).then((response) => {
+            return response;
+        });
+    }
+
+    /**
+     * @param {object} [params] - optional parameters (refer to betfair docs)
+     */
+    getClearedOrders (params) {
+        return this.devApi('listClearedOrders', params).then((response) => {
+            return response;
+        });
+    }
+
+    // placeOrders
+
+    // cancelOrders
+
+    // replaceOrders
+
+    // placeOrders
 
     devApi(method, params) {
         var def = [{
@@ -59,6 +185,12 @@ class Betfair {
         return this.request('developers.betfair.com', '/api.betfair.com/exchange/betting/json-rpc/v1', 'text/plain;charset=UTF-8', JSON.stringify(def));
     }
 
+    /**
+     * @param {string} host - hostname of endpoint
+     * @param {string} path - path of endpoint
+     * @param {string} contentType - content type of payload
+     * @param {object} params - payload
+     */
     request (host, path, contentType, params) {
         return new Promise((resolve, reject) => {
             var options = {
