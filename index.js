@@ -8,9 +8,10 @@ class Betfair {
 
     /**
      * @contructor
-     * @param {string} appKey
-     * @param {string} [username]
-     * @param {string} [password]
+     * @param {string} appKey - Betfair application key
+     * @param {string} [username] - Betfair username
+     * @param {string} [password] - Betfair password
+     * @param {boolean} [keepAlive=false] - Keep token alive till logout
      */
     constructor(appKey, username, password, keepAlive) {
         this.appKey = appKey;
@@ -24,14 +25,14 @@ class Betfair {
     }
 
     /**
-     * @param {string} [username]
-     * @param {string} [password]
-     * @param {boolean} [password]
+     * @param {string} [username] - Betfair username
+     * @param {string} [password] - Betfair password
+     * @param {boolean} [keepAlive] - Keep token alive till logout
      */
     login (username, password, keepAlive) {
         this.keepAlive = keepAlive || this.keepAlive;
 
-        this.request('identitysso.betfair.com', '/api/login', 'application/x-www-form-urlencoded', {
+        return this.request('identitysso.betfair.com', '/api/login', 'application/x-www-form-urlencoded', {
             username: username || this.username,
             password: password || this.password
         }).then((response) => {
@@ -45,6 +46,7 @@ class Betfair {
     }
 
     logout () {
+        this.keepAlive = false;
         return this.request('identitysso.betfair.com', '/api/logout');
     }
 
