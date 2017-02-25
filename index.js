@@ -12,11 +12,13 @@ class Betfair {
      * @param {string} [username]
      * @param {string} [password]
      */
-    constructor(appKey, username, password) {
+    constructor(appKey, username, password, keepAlive) {
         this.appKey = appKey;
         this.authKey = '';
         this.username = username || '';
         this.password = password || '';
+        this.keepAlive = keepAlive || false;
+        this.keepAliveTimeout = 3600000;
 
         this.login();
     }
@@ -24,14 +26,40 @@ class Betfair {
     /**
      * @param {string} [username]
      * @param {string} [password]
+     * @param {boolean} [password]
      */
-    login (username, password) {
+    login (username, password, keepAlive) {
+        this.keepAlive = keepAlive || this.keepAlive;
+
         this.request('identitysso.betfair.com', '/api/login', 'application/x-www-form-urlencoded', {
             username: username || this.username,
             password: password || this.password
         }).then((response) => {
             this.authKey = response.token;
+            if (this.keepAlive) {
+                setTimeout(() => {
+                    this.keepAliveReset();
+                }, this.keepAliveTimeout);
+            }
         });
+    }
+
+    logout () {
+        return this.request('identitysso.betfair.com', '/api/logout');
+    }
+
+    keepAliveReset () {
+        if (this.keepAlive) {
+            this.request('identitysso.betfair.com', '/api/keepAlive').then((response) => {
+                if (response.status === 'FAIL') {
+                    this.login();
+                } else {
+                    setTimeout(() => {
+                        this.keepAliveReset();
+                    }, this.keepAliveTimeout);
+                }
+            });
+        }
     }
 
     /**
@@ -268,20 +296,20 @@ class Betfair {
             minFillSize: minFillSize,
             betTargetType: betTargetType,
             betTargetSize: betTargetSize
-        }
+        };
     }
 
     static buildMarketOnCloseOrder (liability) {
         return {
             liability: liability
-        }
+        };
     }
 
     static buildLimitOnCloseOrder (liability, price) {
         return {
             liability: liability,
             price: price
-        }
+        };
     }
 
     static buildReplaceInstruction(betId, newPrice) {
@@ -336,12 +364,13 @@ class Betfair {
                     port: 443,
                     method: 'POST',
                     headers: {
-                        'Content-Type': contentType,
+                        'Content-Type': contentType || 'application/json',
                         'X-Application': this.appKey,
                         'Accept': 'application/json'
                     }
                 },
                 httpReq;
+
             if (contentType === 'application/x-www-form-urlencoded') {
                 params = querystring.stringify(params);
                 options.headers['Content-Length'] = params.length;
@@ -370,7 +399,9 @@ class Betfair {
                     throw new Error(err);
                 });
             });
-            httpReq.write(params);
+            if (params) {
+                httpReq.write(params);
+            }
             httpReq.end();
         });
     }
