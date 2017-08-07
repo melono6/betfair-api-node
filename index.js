@@ -20,6 +20,7 @@ class Betfair {
         this.password = password || '';
         this.keepAlive = keepAlive || false;
         this.keepAliveTimeout = 3600000;
+        this.locale = 'en';
 
         this.login();
     }
@@ -68,35 +69,10 @@ class Betfair {
      * @param {object} filter - Filter options (refer to betfair docs)
      * @return {Promise<Array>} - Promise that resolves with the results in an array
      */
-    getEventTypes (filter) {
-        return this.devApi('listEventTypes', {
-            "filter": filter
-        }).then((response) => {
-            return response;
-        });
-    }
-
-    /**
-     * @param {object} filter - Filter options (refer to betfair docs)
-     * @return {Promise<Array>} - Promise that resolves with the results in an array
-     */
-    getCompetitions (filter) {
+    listCompetitions (filter) {
         return this.devApi('listCompetitions', {
-            "filter": filter
-        }).then((response) => {
-            return response;
-        });
-    }
-
-    /**
-     * @param {object} filter - Filter options (refer to betfair docs)
-     * @param {string} granularity - DAYS/HOURS/MINUTES
-     * @return {Promise<Array>} - Promise that resolves with the results in an array
-     */
-    getTimeRanges (filter, granularity) {
-        return this.devApi('listTimeRanges', {
             "filter": filter,
-            "granularity": granularity
+            "locale": this.locale
         }).then((response) => {
             return response;
         });
@@ -106,75 +82,10 @@ class Betfair {
      * @param {object} filter - Filter options (refer to betfair docs)
      * @return {Promise<Array>} - Promise that resolves with the results in an array
      */
-    getEvents (filter) {
-        return this.devApi('listEvents', {
-            "filter": filter
-        }).then((response) => {
-            return response;
-        });
-    }
-
-    /**
-     * @param {object} filter - Filter options (refer to betfair docs)
-     * @return {Promise<Array>} - Promise that resolves with the results in an array
-     */
-    getMarketTypes (filter) {
-        return this.devApi('listMarketTypes', {
-            "filter": filter
-        }).then((response) => {
-            return response;
-        });
-    }
-
-    /**
-     * @param {object} filter - Filter options (refer to betfair docs)
-     * @return {Promise<Array>} - Promise that resolves with the results in an array
-     */
-    getCountries (filter) {
+    listCountries (filter) {
         return this.devApi('listCountries', {
-            "filter": filter
-        }).then((response) => {
-            return response;
-        });
-    }
-
-    /**
-     * @param {object} filter - Filter options (refer to betfair docs)
-     * @return {Promise<Array>} - Promise that resolves with the results in an array
-     */
-    getVenues (filter) {
-        return this.devApi('listVenues', {
-            "filter": filter
-        }).then((response) => {
-            return response;
-        });
-    }
-
-    /**
-     * @param {object} filter - Filter options (refer to betfair docs)
-     * @param {string} maxResults - Filter options (refer to betfair docs)
-     * @todo add opts object for optional args
-     * @return {Promise<Array>} - Promise that resolves with the results in an array
-     */
-    getMarketCatalogue (filter, maxResults) {
-        return this.devApi('listMarketCatalogue', {
             "filter": filter,
-            "maxResults": maxResults
-        }).then((response) => {
-            return response;
-        });
-    }
-
-    /**
-     * @param {array} marketIds - array of market ids
-     * @param {number} maxResults - number of max results to return
-     * @return {Promise<Array>} - Promise that resolves with the results in an array
-     * @todo add opts object for optional args, move priceProjection into it
-     */
-    getMarketBook (marketIds,  priceProjection) {
-        return this.devApi('listMarketBook', {
-            "marketIds": marketIds,
-            "priceProjection": priceProjection
+            "locale": this.locale
         }).then((response) => {
             return response;
         });
@@ -182,18 +93,8 @@ class Betfair {
 
     /**
      * @param {object} [params] - optional parameters (refer to betfair docs)
-     * @return {Promise<Array>} - Promise that resolves with the results in an array
      */
-    getMarketProfitAndLoss (params) {
-        return this.devApi('listMarketProfitAndLoss', params || {}).then((response) => {
-            return response;
-        });
-    }
-
-    /**
-     * @param {object} [params] - optional parameters (refer to betfair docs)
-     */
-    getCurrentOrders (params) {
+    listCurrentOrders (params = {}) {
         return this.devApi('listCurrentOrders', params).then((response) => {
             return response;
         });
@@ -203,8 +104,122 @@ class Betfair {
      * @param {object} [params] - optional parameters (refer to betfair docs)
      * @return {Promise<Array>} - Promise that resolves with the results in an array
      */
-    getClearedOrders (params) {
+    listClearedOrders (params) {
         return this.devApi('listClearedOrders', params).then((response) => {
+            return response;
+        });
+    }
+    
+    /**
+     * @param {object} filter - Filter options (refer to betfair docs)
+     * @return {Promise<Array>} - Promise that resolves with the results in an array
+     */
+    listEvents (filter) {
+        return this.devApi('listEvents', {
+            "filter": filter,
+            "locale": this.locale
+        }).then((response) => {
+            return response;
+        });
+    }
+    
+    /**
+     * @param {object} filter - Filter options (refer to betfair docs)
+     * @return {Promise<Array>} - Promise that resolves with the results in an array
+     */
+    listEventTypes (filter) {
+        return this.devApi('listEventTypes', {
+            "filter": filter,
+            "locale": this.locale
+        }).then((response) => {
+            return response;
+        });
+    }
+    
+    /**
+     * @param {array} marketIds - array of market ids
+     * @param {object} opts - optional parameters (refer to betfair docs)
+     * @return {Promise<Array>} - Promise that resolves with the results in an array
+     */
+    listMarketBook (marketIds,  priceProjection, opts = {}) {
+        return this.devApi('listMarketBook', Object.assign({
+            "marketIds": marketIds,
+            "locale": this.locale
+        }, opts)).then((response) => {
+            return response;
+        });
+    }
+    
+    /**
+    
+    */
+    listRunnerBook () {
+        
+    }
+    
+    /**
+     * @param {object} filter - Filter options (refer to betfair docs)
+     * @param {number} maxResults - result limit (greater than 0 less than a 1000)
+     * @param {object} opts - optional parameters (refer to betfair docs)
+     * @return {Promise<Array>} - Promise that resolves with the results in an array
+     */
+    listMarketCatalogue (filter, maxResults, opts = {}) {
+        return this.devApi('listMarketCatalogue', Object.assign({
+            "filter": filter,
+            "maxResults": maxResults,
+            "locale": this.locale
+        }, opts)).then((response) => {
+            return response;
+        });
+    }
+    
+    /**
+     * @param {object} [params] - optional parameters (refer to betfair docs)
+     * @return {Promise<Array>} - Promise that resolves with the results in an array
+     */
+    listMarketProfitAndLoss (params = {}) {
+        return this.devApi('listMarketProfitAndLoss', params).then((response) => {
+            return response;
+        });
+    }
+    
+    /**
+     * @param {object} filter - Filter options (refer to betfair docs)
+     * @return {Promise<Array>} - Promise that resolves with the results in an array
+     */
+    listMarketTypes (filter) {
+        return this.devApi('listMarketTypes', {
+            "filter": filter,
+            "locale": this.locale
+        }).then((response) => {
+            return response;
+        });
+    }
+    
+    /**
+     * @param {object} filter - Filter options (refer to betfair docs)
+     * @param {string} granularity - DAYS/HOURS/MINUTES
+     * @return {Promise<Array>} - Promise that resolves with the results in an array
+     */
+    listTimeRanges (filter, granularity) {
+        return this.devApi('listTimeRanges', {
+            "filter": filter,
+            "granularity": granularity,
+            "locale": this.locale
+        }).then((response) => {
+            return response;
+        });
+    }
+    
+    /**
+     * @param {object} filter - Filter options (refer to betfair docs)
+     * @return {Promise<Array>} - Promise that resolves with the results in an array
+     */
+    listVenues (filter) {
+        return this.devApi('listVenues', {
+            "filter": filter,
+            "locale": this.locale
+        }).then((response) => {
             return response;
         });
     }
@@ -212,13 +227,14 @@ class Betfair {
     /**
      * @param {string} marketId - Id of market to bet in
      * @param {array<Object>} instructions - Array of placeInstruction objects {@link Betfair.buildPlaceInstruction}
-     * @todo add opts object for optional args
+     * @param {object} opts - optional parameters (refer to betfair docs)
      */
-    placeOrders (marketId, instructions) {
-        return this.devApi('placeOrders', {
+    placeOrders (marketId, instructions, opts = {}) {
+        return this.devApi('placeOrders', Object.assign({
             marketId: marketId,
-            instructions: instructions
-        }).then((response) => {
+            instructions: instructions,
+            "locale": this.locale
+        }, opts)).then((response) => {
             return response;
         });
     }
@@ -226,13 +242,14 @@ class Betfair {
     /**
      * @param {string} marketId - Id of market bet was made
      * @param {array<Object>} instructions - Array of placeInstruction objects {@link Betfair.buildCancelInstruction}
-     * @todo add opts object for optional args
+     * @param {object} opts - optional parameters (refer to betfair docs)
      */
-    cancelOrders (marketId, instructions) {
-        return this.devApi('cancelOrders', {
+    cancelOrders (marketId, instructions, opts = {}) {
+        return this.devApi('cancelOrders', Object.assign({
             marketId: marketId,
-            instructions: instructions
-        }).then((response) => {
+            instructions: instructions,
+            "locale": this.locale
+        }, opts)).then((response) => {
             return response;
         });
     }
@@ -240,13 +257,14 @@ class Betfair {
     /**
      * @param {string} marketId - Id of market bet was made
      * @param {array<Object>} instructions - Array of placeInstruction objects {@link Betfair.buildUpdateInstruction}
-     * @todo add opts object for optional args
+     * @param {object} opts - optional parameters (refer to betfair docs)
      */
-    updateOrders (marketId, instructions) {
-        return this.devApi('updateOrders', {
+    updateOrders (marketId, instructions, opts = {}) {
+        return this.devApi('updateOrders', Object.assign({
             marketId: marketId,
-            instructions: instructions
-        }).then((response) => {
+            instructions: instructions,
+            "locale": this.locale
+        }, opts)).then((response) => {
             return response;
         });
     }
@@ -254,13 +272,14 @@ class Betfair {
     /**
      * @param {string} marketId - Id of market bet was made
      * @param {array<Object>} instructions - Array of placeInstruction objects {@link Betfair.buildReplaceInstruction}
-     * @todo add opts object for optional args
+     * @param {object} opts - optional parameters (refer to betfair docs)
      */
-    replaceOrders (marketId, instructions) {
-        return this.devApi('replaceOrders', {
+    replaceOrders (marketId, instructions, opts = {}) {
+        return this.devApi('replaceOrders', Object.assign({
             marketId: marketId,
-            instructions: instructions
-        }).then((response) => {
+            instructions: instructions,
+            "locale": this.locale
+        }, opts)).then((response) => {
             return response;
         });
     }
@@ -334,8 +353,6 @@ class Betfair {
             newPersistenceType: newPersistenceType
         };
     }
-
-    // updateOrders
 
     /**
      * @private
