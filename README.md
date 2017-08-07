@@ -13,13 +13,13 @@ var Betfair = require('betfair-api'),
     betfair = new Betfair('APPKEY', 'USERNAME', PASSWORD);
 
 
-betfair.getEvents({
+betfair.listEvents({
     "competitionIds":["31"]
 }).then((response) => {
     console.log(response);
 });
 
-betfair.getMarketCatalogue({
+betfair.listMarketCatalogue({
     "eventIds": [EVENT_ID]
 }, "50").then((response) => {
     console.log(response);
