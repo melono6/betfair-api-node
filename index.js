@@ -141,7 +141,7 @@ class Betfair {
      * @param {object} opts - optional parameters (refer to betfair docs)
      * @return {Promise<Array>} - Promise that resolves with the results in an array
      */
-    listMarketBook (marketIds,  priceProjection, opts = {}) {
+    listMarketBook (marketIds, opts = {}) {
         return this.devApi('listMarketBook', Object.assign({
             "marketIds": marketIds,
             "locale": this.locale
@@ -153,8 +153,14 @@ class Betfair {
     /**
     
     */
-    listRunnerBook () {
-        
+    listRunnerBook (marketIds, selectionId, opts = {}) {
+        return this.devApi('listRunnerBook', Object.assign({
+            "marketIds": marketIds,
+            "selectionId": selectionId,
+            "locale": this.locale
+        }, opts)).then((response) => {
+            return response;
+        });
     }
     
     /**
