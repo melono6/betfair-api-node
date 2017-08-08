@@ -7,6 +7,13 @@
     "type": "git",
     "url": "https://github.com/melono6/betfair-api-node"
   },
+  "keywords": [
+    "betfair",
+    "betting",
+    "sports",
+    "trading"
+  ],
   "author": "melono6 (https://github.com/melono6/)",
+  "license": "MIT",
   "homepage": "https://github.com/melono6/betfair-api-node"
 }
