@@ -1,6 +1,6 @@
 {
   "name": "betfair-api-node",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Node wrapper for the betfair api",
   "main": "index.js",
   "repository": {

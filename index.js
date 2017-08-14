@@ -151,11 +151,14 @@ class Betfair {
     }
     
     /**
-    
+     * @param {number} marketIds
+     * @param {number} selectionId
+     * @param {object} opts - optional parameters (refer to betfair docs)
+     * @return {Promise<Array>} - Promise that resolves with the results in an array
     */
-    listRunnerBook (marketIds, selectionId, opts = {}) {
+    listRunnerBook (marketId, selectionId, opts = {}) {
         return this.devApi('listRunnerBook', Object.assign({
-            "marketIds": marketIds,
+            "marketIds": marketId,
             "selectionId": selectionId,
             "locale": this.locale
         }, opts)).then((response) => {
@@ -359,6 +362,61 @@ class Betfair {
             newPersistenceType: newPersistenceType
         };
     }
+    
+    /**
+     * @return {Promise<Array>} - Promise that resolves with the results in an array
+     */
+    getAccountDetails () {
+        return this.accountsApi('getAccountDetails').then((response) => {
+            return response;
+        });
+    }
+    
+    /**
+     * @return {Promise<Array>} - Promise that resolves with the results in an array
+     */
+    getAccountFunds (wallet) {
+        let params = {};
+        if (wallet) {
+            params.wallet = wallet;
+        }
+        return this.accountsApi('getAccountFunds', params).then((response) => {
+            return response;
+        });
+    }
+    
+    /**
+     * @return {Promise<Array>} - Promise that resolves with the results in an array
+     */
+    getDeveloperAppKeys () {
+        return this.accountsApi('getDeveloperAppKeys').then((response) => {
+            return response;
+        }); 
+    }
+    
+    /**
+     * @param {object} params - options (refer to betfair docs)
+     * @return {Promise<Array>} - Promise that resolves with the results in an array
+     */
+    getAccountStatement (params = {}) {
+        return this.accountsApi('getAccountStatement', params).then((response) => {
+            return response;
+        }); 
+    }
+
+    /**
+     * @param {string} fromCurrency - currency code
+     * @return {Promise<Array>} - Promise that resolves with the results in an array
+     */
+    listCurrencyRates (fromCurrency) {
+        let params = {};
+        if (fromCurrency) {
+            params.fromCurrency = fromCurrency;
+        }
+        return this.accountsApi('listCurrencyRates', params).then((response) => {
+            return response;
+        });
+    }
 
     /**
      * @private
@@ -372,6 +430,20 @@ class Betfair {
             "params": params
         }];
         return this.request('developers.betfair.com', '/api.betfair.com/exchange/betting/json-rpc/v1', 'text/plain;charset=UTF-8', JSON.stringify(def));
+    }
+    
+    /**
+     * @private
+     * @param {string} method - api request method
+     * @param {object} params - payload parameters
+     */
+    accountsApi (method, params) {
+        var def = [{
+            "jsonrpc": "2.0",
+            "method": "AccountAPING/v1.0/" + method,
+            "params": params
+        }];
+        return this.request('developers.betfair.com', '/api.betfair.com/exchange/account/json-rpc/v1', 'text/plain;charset=UTF-8', JSON.stringify(def));
     }
 
     /**
